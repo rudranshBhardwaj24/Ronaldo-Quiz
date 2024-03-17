@@ -49,21 +49,16 @@ const quizData = [
     answer: "17",
   },
   {
-    question:
-      "True or False: Ronaldo has played for clubs in England, Spain, Italy, and Saudi Arabia.",
-    answer: "True",
-  },
-  {
     question: "What is Ronaldo's jersey number for the Portugal national team?",
     options: ["10", "9", "17", "7"],
     answer: "7",
   },
 ];
-
+const youWin = new window.Audio("/siuuuu.mp4");
+const youLose = new window.Audio("");
 const quizContainer = document.getElementById("quiz-container");
 const resultContainer = document.getElementById("result-container");
 let score = 0;
-
 // Function to shuffle and select 5 random questions
 function getRandomQuestions() {
   const shuffled = quizData.sort(() => 0.5 - Math.random()); // Shuffle array randomly
@@ -98,8 +93,14 @@ function displayQuestion() {
 }
 
 function checkAnswer(selectedOption) {
-  if (selectedOption === currentQuestions[currentQuestionIndex].answer) {
-    score++;
+  const currentQuestion = currentQuestions[currentQuestionIndex];
+
+  // Check if the selected option is one of the options in the current question
+  if (currentQuestion.options.includes(selectedOption)) {
+    if (selectedOption === currentQuestion.answer) {
+      score++;
+      document.getElementById("score").textContent = score; // Update score display
+    }
   }
 
   currentQuestionIndex++;
@@ -115,6 +116,7 @@ function displayResult() {
   quizContainer.style.display = "none";
 
   if (score >= 3) {
+    youWin.play();
     resultContainer.innerHTML = "You win!";
   } else {
     resultContainer.innerHTML = "You lose!";
